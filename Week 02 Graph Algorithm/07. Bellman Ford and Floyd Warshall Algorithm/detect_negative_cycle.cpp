@@ -24,6 +24,7 @@ int main()
         int u, v, c;
         cin >> u >> v >> c;
         edges_list.push_back(Edge(u, v, c));
+        edges_list.push_back(Edge(v, u, c)); // for undirected graph
     }
     distances[0] = 0;
     for (int i = 1; i <= vertices - 1; i++)
@@ -39,11 +40,30 @@ int main()
         }
     }
 
-    for (int i = 0; i < vertices; i++)
+    bool flag = false;
+    for (Edge edge : edges_list)
     {
+        int u = edge.u, v = edge.v, c = edge.c;
 
-        cout << i << " --> " << distances[i] << endl;
+        if (distances[u] < INT_MAX && distances[u] + c < distances[v])
+        {
+            flag = true;
+            break;
+        }
     }
 
+    if (flag)
+    {
+        cout << "Cycle found. No answer" << endl;
+    }
+    else
+    {
+
+        for (int i = 0; i < vertices; i++)
+        {
+
+            cout << i << " --> " << distances[i] << endl;
+        }
+    }
     return 0;
 }
